@@ -1,0 +1,19 @@
+##### Build bricksync
+FROM alpine:3.12 as builder
+
+RUN apk add gcc libc-dev libressl-dev git
+
+RUN git clone https://github.com/Area128/bricksync.git
+
+WORKDIR /bricksync/src/
+RUN ./compile
+
+
+##### Finally prepare our container
+FROM alpine:3.12
+
+RUN apk add libressl3.1-libssl
+
+COPY --from=builder /bricksync/src/bricksync .
+
+ENTRYPOINT ["/bricksync"]

@@ -1,0 +1,17 @@
+extends layout
+
+block append head
+  link(rel='stylesheet', href='xterm/css/xterm.css')
+  script(src='/socket.io/socket.io.js')
+  script(src='/xterm/lib/xterm.js')
+  script(src='/xterm-addon-fit/xterm-addon-fit.js')
+  script(src='/axios/axios.min.js')
+
+block content
+  h2= "Bricksync Web UI"
+  p A VERY simple web ui for bricksync.
+
+  button(type='button' onclick='blmaster("on")') blmaster on
+  button(type='button' onclick='blmaster("off")') blmaster off
+  div(id='terminal')
+    script(src='/javascripts/term.js')
