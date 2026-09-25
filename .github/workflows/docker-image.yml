@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DATE_TAG: ${{ date +%Y%m%d%H%M }} # This variable is available to all jobs
+
 jobs:
 
   build:
@@ -17,5 +20,7 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login --username Area128 --password ${{ secrets.REG_TOKEN }} ghcr.io
-        docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-ui:first
-        docker push ghcr.io/area128/bricksync-ui:first
+        docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-ui:${{ env.DATE_TAG }}
+        docker image tag ghcr.io/area128/bricksync-ui:${{ env.DATE_TAG }} ghcr.io/area128/bricksync-ui:latest
+        docker push ghcr.io/area128/bricksync-ui:${{ env.DATE_TAG }}
+        docker push ghcr.io/area128/bricksync-ui:latest
