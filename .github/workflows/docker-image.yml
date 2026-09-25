@@ -15,4 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile.ui --tag bricksync-ui:$(date +%s)
+      run: |
+        docker login --username Area128 --password ${{ secrets.REG_TOKEN }} ghcr.io
+        docker build . --file Dockerfile.ui --tag bricksync-ui:first
+        docker push ghcr.io/Area128/bricksync-ui:first
