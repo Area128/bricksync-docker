@@ -17,5 +17,5 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login --username Area128 --password ${{ secrets.REG_TOKEN }} ghcr.io
-        docker build . --file Dockerfile.ui --tag bricksync-ui:first
+        docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-ui:first
         docker push ghcr.io/area128/bricksync-ui:first
