@@ -1,16 +1,17 @@
 ##### Build bricksync
-FROM node:alpine3.12 as bricksyncbuilder
+FROM node:alpine as bricksyncbuilder
 
 RUN apk add gcc libc-dev libressl-dev git
 
-RUN git clone https://github.com/Area128/bricksync.git
+RUN git clone https://github.com/ZZJHONS/Bricksync.git
 
-WORKDIR /bricksync/src/
+WORKDIR /Bricksync/
+RUN chmod +x ./compile
 RUN ./compile
 
 
 ##### Install npm dependencies
-FROM node:alpine3.12 as uibuilder
+FROM node:alpine as uibuilder
 
 COPY bricksync-ui/ /home/node/bricksync-ui/
 WORKDIR /home/node/bricksync-ui/
@@ -18,11 +19,11 @@ RUN npm install
 
 
 ##### Finally prepare our container
-FROM node:alpine3.12
+FROM node:alpine
 
-RUN apk add libressl3.1-libssl screen
+RUN apk add libressl-dev screen
 
-COPY --from=bricksyncbuilder /bricksync/src/bricksync .
+COPY --from=bricksyncbuilder /Bricksync/bricksync .
 COPY entrypoint.sh .
 
 ENV PORT=8080
