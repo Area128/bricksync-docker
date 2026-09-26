@@ -23,5 +23,12 @@ jobs:
         docker login --username Area128 --password ${{ secrets.REG_TOKEN }} ghcr.io
         docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }}
         docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }} ghcr.io/area128/bricksync-docker:latest
+        docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }} ghcr.io/area128/bricksync-docker:ui-latest
         docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }}
+        docker push ghcr.io/area128/bricksync-docker:ui-latest
         docker push ghcr.io/area128/bricksync-docker:latest
+
+        docker build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.date.outputs.date }}
+        docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.date.outputs.date }} ghcr.io/area128/bricksync-docker:cli-latest
+        docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.date.outputs.date }}
+        docker push ghcr.io/area128/bricksync-docker:cli-latest
