@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Docker Image on Push
 
 on:
   push:
@@ -13,22 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d%H%M')"
+    # - name: Get current date
+    #   id: date
+    #   run: echo "::set-output name=date::$(date +'%Y%m%d%H%M')"
+    - name: Get upstream version from file
+      id: version
+      run: echo "::set-output name=version::$(cat ZZJHONS-Bricksync-latest-release.txt | sed 's/[^[:alnum:]\.\_]\+/-/g')"
 
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: |
         docker login --username Area128 --password ${{ secrets.REG_TOKEN }} ghcr.io
-        docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }}
-        docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }} ghcr.io/area128/bricksync-docker:latest
-        docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }} ghcr.io/area128/bricksync-docker:ui-latest
-        docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.date.outputs.date }}
+        docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.version.outputs.version }}
+        docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.version.outputs.version }} ghcr.io/area128/bricksync-docker:latest
+        docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.version.outputs.version }} ghcr.io/area128/bricksync-docker:ui-latest
+        docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.version.outputs.version }}
         docker push ghcr.io/area128/bricksync-docker:ui-latest
         docker push ghcr.io/area128/bricksync-docker:latest
 
-        docker build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.date.outputs.date }}
-        docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.date.outputs.date }} ghcr.io/area128/bricksync-docker:cli-latest
-        docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.date.outputs.date }}
+        docker build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.version.outputs.version }}
+        docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.version.outputs.version }} ghcr.io/area128/bricksync-docker:cli-latest
+        docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.version.outputs.version }}
         docker push ghcr.io/area128/bricksync-docker:cli-latest
