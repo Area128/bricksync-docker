@@ -1,11 +1,12 @@
 ##### Build bricksync
-FROM alpine:latest as builder
+FROM node:alpine as bricksyncbuilder
 
 RUN apk add gcc libc-dev libressl-dev git
 
 RUN git clone https://github.com/ZZJHONS/Bricksync.git
 
-WORKDIR /bricksync/src/
+WORKDIR /Bricksync/
+RUN chmod +x ./compile
 RUN ./compile
 
 
@@ -14,6 +15,6 @@ FROM alpine:latest
 
 RUN apk add libressl-dev
 
-COPY --from=builder /bricksync/src/bricksync .
+COPY --from=bricksyncbuilder /Bricksync/bricksync .
 
 ENTRYPOINT ["/bricksync"]
