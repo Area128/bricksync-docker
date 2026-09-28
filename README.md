@@ -30,3 +30,9 @@ Or if you don't feel like building:
 `docker run -it -v ${PWD}/data:/data --rm --name bricksync  ghcr.io/area128/bricksync-docker:ui-latest`
 
 Access the UI at [http://127.0.0.1:8080]()
+
+This is what it looks like. Nothng fancy, just 2 buttons to trigger a resync. You can scroll up and down on the "terminal" but it won't accept any input.
+
+**No security considerations. Run at your own risk.** This is just a proof of concept.
+
+![Screenshot of the UI](screenshot.png)
