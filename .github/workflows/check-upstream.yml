@@ -1,7 +1,7 @@
 name: Get latest release version
 on:
   schedule:
-    - cron:  '51 */6 * * *'
+    - cron:  '51 6 * * *'
   workflow_dispatch:
 jobs:
   get-version:
@@ -13,6 +13,9 @@ jobs:
       - name: Fetch release version
         id: latestrelease
         run: echo "::set-output name=latestrelease::$( curl -sL https://api.github.com/repos/ZZJHONS/Bricksync/releases/latest | jq -r '.tag_name' )"
+      - name: Check fetched value is not null
+        if: ${{ steps.latestrelease.outputs.latestrelease == 'null' }}
+        run: exit 1
       - name: Save the release name
         run: echo ${{ steps.latestrelease.outputs.latestrelease }} > ZZJHONS-Bricksync-latest-release.txt
       - name: Check for modified files
