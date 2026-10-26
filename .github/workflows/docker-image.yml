@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Get upstream version from file
       id: version
       run: echo "::set-output name=version::$(cat ZZJHONS-Bricksync-latest-release.txt | sed 's/[^[:alnum:]\.\_]\+/-/g')"
