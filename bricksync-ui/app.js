@@ -24,7 +24,7 @@ app.use('/', indexRouter);
 app.use('/blmaster', blmasterRouter);
 app.use('/xterm/lib', express.static(__dirname + '/node_modules/xterm/lib'));
 app.use('/xterm/css', express.static(__dirname + '/node_modules/xterm/css'));
-app.use('/xterm-addon-fit', express.static(__dirname + '/node_modules/xterm-addon-fit/lib'));
+app.use('/xterm-addon-fit', express.static(__dirname + '/node_modules/@xterm/addon-fit/lib'));
 app.use('/axios', express.static(__dirname + '/node_modules/axios/dist'));
 
 // catch 404 and forward to error handler
