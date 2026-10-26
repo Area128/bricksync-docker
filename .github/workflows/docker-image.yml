@@ -23,10 +23,14 @@ jobs:
       run: |
         docker login --username Area128 --password ${{ github.token }} ghcr.io
 
+        sed "s/RUN git checkout HEAD/RUN git checkout ${{ steps.version.outputs.version }}/" Dockerfile.cli
+
         docker build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.version.outputs.version }}
         docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.version.outputs.version }} ghcr.io/area128/bricksync-docker:cli-latest
         docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.version.outputs.version }}
         docker push ghcr.io/area128/bricksync-docker:cli-latest
+
+        sed "s/RUN git checkout HEAD/RUN git checkout ${{ steps.version.outputs.version }}/" Dockerfile.ui
 
         docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.version.outputs.version }}
         docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.version.outputs.version }} ghcr.io/area128/bricksync-docker:latest

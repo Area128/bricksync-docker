@@ -6,6 +6,7 @@ RUN apk add gcc libc-dev libressl-dev git
 RUN git clone https://github.com/ZZJHONS/Bricksync.git
 
 WORKDIR /Bricksync/
+RUN git checkout HEAD
 RUN chmod +x ./compile
 RUN ./compile
 
