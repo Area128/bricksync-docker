@@ -1,5 +1,5 @@
 ##### Build bricksync
-FROM node:alpine as bricksyncbuilder
+FROM node:alpine AS bricksyncbuilder
 
 RUN apk add gcc libc-dev libressl-dev git
 
