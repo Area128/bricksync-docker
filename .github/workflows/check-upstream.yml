@@ -19,7 +19,7 @@ jobs:
         id: cli_image_exists # used by other steps.
         uses: razonyang/github-action-docker-image-tag-exists@v1
         with:
-          owner: Area128
+          owner: area128
           name:  bricksync-docker
           tag: "cli-${{ steps.latestrelease.outputs.latestrelease }}"
 
@@ -27,7 +27,7 @@ jobs:
         id: ui_image_exists # used by other steps.
         uses: razonyang/github-action-docker-image-tag-exists@v1
         with:
-          owner: Area128
+          owner: area128
           name:  bricksync-docker
           tag: "ui-${{ steps.latestrelease.outputs.latestrelease }}"
 
