@@ -32,7 +32,7 @@ jobs:
           tag: "ui-${{ steps.latestrelease.outputs.latestrelease }}"
 
       - name: Build the cli Docker image
-        if: ((!steps.cli_image_exists.outputs.exists))
+        if: ${{ steps.cli_image_exists.outputs.exists == false }}
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
 
@@ -44,7 +44,7 @@ jobs:
           docker push ghcr.io/area128/bricksync-docker:cli-latest
 
       - name: Build the ui Docker image
-        if: ((!steps.ui_image_exists.outputs.exists))
+        if: ${{ steps.ui_image_exists.outputs.exists == false }}
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
 
