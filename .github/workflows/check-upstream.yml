@@ -38,7 +38,7 @@ jobs:
 
           sed "s/ENV BS_RELEASE_TAG=HEAD/ENV BS_RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.cli
 
-          docker build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}
+          docker buildx build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }} --no-cache --progress plain
           docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:cli-latest
           docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}
           docker push ghcr.io/area128/bricksync-docker:cli-latest
@@ -50,7 +50,7 @@ jobs:
 
           sed "s/ENV BS_RELEASE_TAG=HEAD/ENV BS_RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.ui
 
-          docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}
+          docker buildx build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} --no-cache --progress plain
           docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:ui-latest
           docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}
           docker push ghcr.io/area128/bricksync-docker:ui-latest
