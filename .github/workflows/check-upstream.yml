@@ -36,7 +36,7 @@ jobs:
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
 
-          sed "s/RUN git checkout HEAD/RUN git checkout ${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.cli
+          sed "s/ENV BS_RELEASE_TAG=HEAD/ENV BS_RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.cli
 
           docker build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}
           docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:cli-latest
@@ -48,7 +48,7 @@ jobs:
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
 
-          sed "s/RUN git checkout HEAD/RUN git checkout ${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.ui
+          sed "s/ENV BS_RELEASE_TAG=HEAD/ENV BS_RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.ui
 
           docker build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}
           docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:ui-latest
