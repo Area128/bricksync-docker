@@ -53,17 +53,14 @@ jobs:
           docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:cli-latest
           docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}
           docker push ghcr.io/area128/bricksync-docker:cli-latest
-        # sed "s/ENV BS_RELEASE_TAG=HEAD/ENV BS_RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.cli
 
       - name: Build the ui Docker image
         if: ${{ steps.ui_image_exists.outputs.exists == false }}
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
-
           docker buildx build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} --no-cache --progress plain --build-arg RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}
           docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:ui-latest
           docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}
           docker push ghcr.io/area128/bricksync-docker:ui-latest
 
-        # sed "s/ENV BS_RELEASE_TAG=HEAD/ENV BS_RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}/" Dockerfile.ui
 
