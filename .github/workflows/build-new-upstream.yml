@@ -1,4 +1,4 @@
-name: Get latest release version and build a new image
+name: Build a new images from latest upstream
 on:
   schedule:
     - cron:  '51 6 * * *'
@@ -60,7 +60,9 @@ jobs:
           docker login --username Area128 --password ${{ github.token }} ghcr.io
           docker buildx build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} --no-cache --progress plain --build-arg RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}
           docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:ui-latest
+          docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:latest
           docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}
           docker push ghcr.io/area128/bricksync-docker:ui-latest
+          docker push ghcr.io/area128/bricksync-docker:latest
 
 
