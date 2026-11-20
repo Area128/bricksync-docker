@@ -13,13 +13,13 @@ jobs:
 
       - name: Fetch release version
         id: latestrelease
-        run: echo "latestrelease=$( curl -sL https://api.github.com/repos/ZZJHONS/Bricksync/releases/latest | jq -r '.tag_name' )-patches" >> $GITHUB_OUTPUT
+        run: echo "latestrelease=$( curl -sL https://api.github.com/repos/ZZJHONS/Bricksync/releases/latest | jq -r '.tag_name' )" >> $GITHUB_OUTPUT
 
       - name: Check if we have build the cli image before
         id: cli_image_exists
         shell: bash
         run: |
-          curl -H "Authorization: Bearer QQ==" -H 'Accept: application/vnd.oci.image.index.v1+json' https://ghcr.io/v2/area128/bricksync-docker/manifests/cli-${{ steps.latestrelease.outputs.latestrelease }} > response.out
+          curl -H "Authorization: Bearer QQ==" -H 'Accept: application/vnd.oci.image.index.v1+json' https://ghcr.io/v2/area128/bricksync-docker/manifests/cli-${{ steps.latestrelease.outputs.latestrelease }}-patches > response.out
           Err=$(jq '.errors' -r response.out)
           echo $Err
           cat response.out
@@ -34,7 +34,7 @@ jobs:
         id: ui_image_exists
         shell: bash
         run: |
-          curl -H "Authorization: Bearer QQ==" -H 'Accept: application/vnd.oci.image.index.v1+json' https://ghcr.io/v2/area128/bricksync-docker/manifests/ui-${{ steps.latestrelease.outputs.latestrelease }} > response.out
+          curl -H "Authorization: Bearer QQ==" -H 'Accept: application/vnd.oci.image.index.v1+json' https://ghcr.io/v2/area128/bricksync-docker/manifests/ui-${{ steps.latestrelease.outputs.latestrelease }}-patches > response.out
           Err=$(jq '.errors' -r response.out)
           echo $Err
           cat response.out
@@ -49,20 +49,20 @@ jobs:
         if: ${{ steps.cli_image_exists.outputs.exists == false }}
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
-          docker buildx build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }} --no-cache --progress plain --build-arg RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}
-          docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:cli-latest
-          docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}
-          docker push ghcr.io/area128/bricksync-docker:cli-latest
+          docker buildx build . --file Dockerfile.cli --tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}-patches --no-cache --progress plain --build-arg RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}
+          docker image tag ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}-patches ghcr.io/area128/bricksync-docker:cli-patches-latest
+          docker push ghcr.io/area128/bricksync-docker:cli-${{ steps.latestrelease.outputs.latestrelease }}-patches
+          docker push ghcr.io/area128/bricksync-docker:cli-patches-latest
 
       - name: Build the ui Docker image
         if: ${{ steps.ui_image_exists.outputs.exists == false }}
         run: |
           docker login --username Area128 --password ${{ github.token }} ghcr.io
-          docker buildx build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} --no-cache --progress plain --build-arg RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}
-          docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:ui-latest
-          docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }} ghcr.io/area128/bricksync-docker:latest
-          docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}
-          docker push ghcr.io/area128/bricksync-docker:ui-latest
-          docker push ghcr.io/area128/bricksync-docker:latest
+          docker buildx build . --file Dockerfile.ui --tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}-patches --no-cache --progress plain --build-arg RELEASE_TAG=${{ steps.latestrelease.outputs.latestrelease }}
+          docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}-patches ghcr.io/area128/bricksync-docker:ui-patches-latest
+          docker image tag ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}-patches ghcr.io/area128/bricksync-docker:patches-latest
+          docker push ghcr.io/area128/bricksync-docker:ui-${{ steps.latestrelease.outputs.latestrelease }}-patches
+          docker push ghcr.io/area128/bricksync-docker:ui-patches-latest
+          docker push ghcr.io/area128/bricksync-docker:patches-latest
 
 
