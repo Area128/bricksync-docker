@@ -1,0 +1,13 @@
+diff --git a/bsfetchinv.c b/bsfetchinv.c
+index 3c110d5..8b1a801 100644
+--- a/bsfetchinv.c
++++ b/bsfetchinv.c
+@@ -132,7 +132,7 @@ bsxInventory *bsQueryBrickLinkInventory( bsContext *context )
+     reply = bsAllocReply( context, BS_QUERY_TYPE_BRICKLINK, 0, 0, (void *)inv );
+ #if 1
+     /* Only available inventory */
+-    bsBrickLinkAddQuery( context, "GET", "/api/store/v1/inventories", "status=Y", 0, (void *)reply, bsBrickLinkReplyInventory );
++    bsBrickLinkAddQuery( context, "GET", "/api/store/v1/inventories", "status=-S%2C-B%2C-C%2C-R", 0, (void *)reply, bsBrickLinkReplyInventory );
+ #else
+     /* Available + stockroom? */
+     bsBrickLinkAddQuery( context, "GET", "/api/store/v1/inventories", "status=Y%2CS", 0, (void *)reply, bsBrickLinkReplyInventory );
